@@ -1,6 +1,5 @@
 import random
 
-from news.pagination import PaginationHandlerMixin
 from rest_framework import filters, status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
@@ -10,9 +9,11 @@ from rest_framework import generics
 from .models import *
 from .serializers import *
 
+from news.pagination import PaginationHandlerMixin
+
 
 class CustomPagination(PageNumberPagination):
-    page_size = 12
+    page_size = 8
     page_size_query_param = 'limit'
     max_page_size = 50
 
@@ -25,17 +26,34 @@ class CollectionAPIView(APIView):
         return Response(serializer.data)
 
 
-class ProductAPIView(APIView):
-    max_page_size = 12
+class ProductAPIView(generics.ListAPIView, PaginationHandlerMixin):
+    """
+    Parameters ---- params1
+    """
 
-    def get(self, request, format=None):
-        product = Product.objects.all()
-        serializer = ProductSerializer(product, many=True)
-        return Response(serializer.data)
-
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    pagination_class = CustomPagination
     filter_backends = [filters.SearchFilter]
-    search_fields = ['name', 'material', 'fabric_structure']
+    search_fields = ['name', 'material']
+    filter_fields = ['name', ]
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        if not queryset:
+            queryset = set(Product.objects.values_list('collection', flat=True))
+            queryset = [random.choice(Product.objects.filter(collection=i)) for i in queryset][:5]
+            serializer = self.get_serializer(queryset, many=True)
+            return Response({'answer': 'По вашему запросу ничего не найдено' ,'Возможно вас интересует':serializer.data})
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+    
 
 class ProductDetailAPIView(APIView):
     def get_object(self, pk):
@@ -74,6 +92,7 @@ class Product_by_collectionAPIView(APIView, PaginationHandlerMixin):
     
 
 class New_productAPIView(APIView):
+
     def get(self, request, format=None):
         new = Product.objects.filter(new = True)[:5]
         serializer = New_productsSerializer(new, many=True)
@@ -83,12 +102,15 @@ class New_productAPIView(APIView):
 class Favorite_productAPIView(APIView, PaginationHandlerMixin):
 
     def get(self, request, format=None):
-
-        qs = Product.objects.filter(favorite=True)
-        if qs is not None:
+        qs = list(Product.objects.filter(favorite=True))
+        print(qs)
+        print(True if len(qs) > 0 else False)
+        if len(qs) > 0:
             serializer = ProductSerializer(qs, many=True)
+            print("some")
         else:
-            queryset = set(Product.objects.values_list('collection', flat=True)[:5])
+            queryset = set(Product.objects.values_list('collection', flat=True))
             res = [random.choice(Product.objects.filter(collection=i)) for i in queryset]
+            print(res)
             serializer = ProductSerializer(res, many=True)
         return Response(serializer.data)

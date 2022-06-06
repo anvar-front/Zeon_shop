@@ -1,4 +1,5 @@
-from dataclasses import field
+from dataclasses import field, fields
+from statistics import mode
 from rest_framework import serializers
 from .models import *
 
@@ -41,3 +42,23 @@ class Help_imgSerializer(serializers.ModelSerializer):
     class Meta:
         model = Help_img
         fields = ['image', 'questions']
+
+
+class Call_backSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Call_back
+        fields = ['name', 'phone_number', 'type']
+
+
+class Footer_second_sideSerializer(serializers.ModelSerializer):
+    social = serializers.StringRelatedField()
+    class Meta:
+        model = Footer_second_side
+        fields = ['social', 'link']
+
+
+class Footer_first_sideSerializer(serializers.ModelSerializer):
+    link = Footer_second_sideSerializer(many=True)
+    class Meta:
+        model = Footer_first_side
+        fields = ['number', 'logo', 'info', 'link']

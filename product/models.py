@@ -1,4 +1,5 @@
 from email.policy import default
+from tabnanny import verbose
 from django.db import models
 from colorfield.fields import ColorField
 from ckeditor.fields import RichTextField
@@ -42,6 +43,14 @@ class Product(models.Model):
 
         self.quantity = math.floor(((int(self.size_range[3:]) - int(self.size_range[:2])) / 2)) + 1
         super(Product, self).save()
+
+    def __str__(self):
+        return self.name
+
+
+    class Meta:
+        verbose_name = "Товар"
+        verbose_name_plural = "Товары"
 
 
 
