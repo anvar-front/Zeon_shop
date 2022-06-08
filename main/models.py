@@ -61,7 +61,7 @@ class Slider(models.Model):
     image = models.ImageField(upload_to='slider/', null=True)
 
     def __str__(self):
-        return "Слайдер"
+        return f"Слайдер {self.id}"
     
     class Meta:
         verbose_name = 'Слайдер'

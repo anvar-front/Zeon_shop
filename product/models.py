@@ -20,6 +20,7 @@ class  Collection(models.Model):        # Коллекция
 
 
 class Product(models.Model):
+    """"""
     collection = models.ForeignKey(Collection, on_delete=models.CASCADE, related_name='products')
     name = models.CharField(max_length=255)
     vendor_code = models.CharField(max_length=255)      # артикул товара

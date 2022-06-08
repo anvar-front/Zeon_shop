@@ -49,7 +49,8 @@ INSTALLED_APPS = [
 
     'main',
     'news',
-    'product'
+    'product',
+    'cart'
 ]
 
 MIDDLEWARE = [
@@ -183,3 +184,5 @@ REST_FRAMEWORK = {
     ]
 
 }
+
+CART_SESSION_ID = 'cart'

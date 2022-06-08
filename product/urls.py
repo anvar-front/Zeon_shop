@@ -1,15 +1,5 @@
 from django.urls import path
-from rest_framework import routers
 from product.views import *
-
-
-# router = routers.DefaultRouter()
-# router.register('collection', CollectionViewset),
-# router.register('similarproduct', SimilarProductViewset),
-# router.register('productbycollection', ProductByCollectionViewset)
-
-
-# router.register('productlist', ProductViewset)
 
 urlpatterns = [
     path('', ProductAPIView.as_view()),

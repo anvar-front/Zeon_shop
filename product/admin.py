@@ -14,5 +14,6 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = [field.name for field in Product._meta.fields]
     inlines = [ProductImgColor]
 
+
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Collection)

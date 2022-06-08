@@ -27,16 +27,12 @@ class CollectionAPIView(APIView):
 
 
 class ProductAPIView(generics.ListAPIView, PaginationHandlerMixin):
-    """
-    Parameters ---- params1
-    """
 
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     pagination_class = CustomPagination
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'material']
-    filter_fields = ['name', ]
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -44,7 +40,7 @@ class ProductAPIView(generics.ListAPIView, PaginationHandlerMixin):
             queryset = set(Product.objects.values_list('collection', flat=True))
             queryset = [random.choice(Product.objects.filter(collection=i)) for i in queryset][:5]
             serializer = self.get_serializer(queryset, many=True)
-            return Response({'answer': 'По вашему запросу ничего не найдено' ,'Возможно вас интересует':serializer.data})
+            return Response({'answer': 'По вашему запросу ничего не найдено', 'Возможно вас интересует':serializer.data})
 
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -56,6 +52,7 @@ class ProductAPIView(generics.ListAPIView, PaginationHandlerMixin):
     
 
 class ProductDetailAPIView(APIView):
+    
     def get_object(self, pk):
         try:
             return Product.objects.get(pk=pk)
@@ -95,7 +92,7 @@ class New_productAPIView(APIView):
 
     def get(self, request, format=None):
         new = Product.objects.filter(new = True)[:5]
-        serializer = New_productsSerializer(new, many=True)
+        serializer = SecondProductSerializer(new, many=True)
         return Response(serializer.data)
 
 

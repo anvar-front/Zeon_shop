@@ -25,10 +25,9 @@ class PublicOfferSerializer(serializers.ModelSerializer):
 
 
 class SliderSerializer(serializers.ModelSerializer):
-    # slider_img = serializers.StringRelatedField(many=True)
     class Meta:
         model = Slider
-        fields = '__all__'
+        fields = ['link', 'image']
 
 
 class HelpSerializer(serializers.ModelSerializer):
