@@ -1,6 +1,7 @@
 from decimal import Decimal
 from django.conf import settings
 from product.models import Product, Image_color
+from django.db.models import Q
 
 
 class Cart(object):
@@ -25,7 +26,7 @@ class Cart(object):
         
         if product_id not in self.cart:
             self.cart[product_id] = {
-                                    'colors': {color: 0},
+                                    'colors': {str(color.id): 0},
                                     'discount': str(product.new_price),
                                     'old_price': str(product.price),
                                     'new_price': str(product.new_price),
@@ -37,9 +38,10 @@ class Cart(object):
         else:
             self.cart[product_id]['quantity'] += quantity
             try:
-                self.cart[product_id]['colors'][color] += 1
+                print("------------------------------------")
+                self.cart[product_id]['colors'][str(color.id)] += 1
             except KeyError:
-                self.cart[product_id]['colors'][color] = quantity
+                self.cart[product_id]['colors'][str(color.id)] = quantity
         self.save()
 
     def save(self):
@@ -48,13 +50,16 @@ class Cart(object):
         # Отметить сеанс как "измененный", чтобы убедиться, что он сохранен
         self.session.modified = True
 
-    def remove(self, product):
+    def remove(self, color, minus):
         """
         Удаление товара из корзины.
         """
-        product_id = str(product.id)
+        product_id = str(color.image_color.id)
         if product_id in self.cart:
-            del self.cart[product_id]
+            if not minus or self.cart[str(product_id)]['colors'][color] < 2:
+                del self.cart[product_id]['colors'][str(color.id)]
+            else: 
+                self.cart[str(product_id)]['colors'][str(color.id)] -= 1
             self.save()
 
     def __iter__(self):
@@ -99,7 +104,10 @@ class Cart(object):
         product_list = Product.objects.filter(id__in=product_ids)
 
         # получаем все цвета полученных продуктов
-        color_list = Image_color.objects.filter(color__in = list_color_normal, image_color__in = product_list)
+        color_list = Image_color.objects.filter(id__in = list_color_normal)
+        # color_list = [Image_color.objects.get()]
+
+        print(color_list, '1234567654324567654324567654324567654')
 
         return {"products": product_list, "colors": color_list}
 

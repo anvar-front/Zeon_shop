@@ -20,7 +20,9 @@ class CartSerializer(serializers.ModelSerializer):
         return serializer.data
 
     def get_quantity(self, obj):
-        return self.context[str(obj.image_color.id)]['colors'][obj.color]
+        # print('\n\n\n\n')
+        # print(self.context, '-----------------------------------000000000000', obj.color)
+        return self.context[str(obj.image_color.id)]['colors'][str(obj.id)]
 
     quantity = serializers.SerializerMethodField('get_quantity')
     product = serializers.SerializerMethodField('get_product')
