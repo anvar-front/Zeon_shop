@@ -1,9 +1,5 @@
-from multiprocessing import managers
-from tkinter import Image
 from rest_framework import serializers
-from product.models import Image_color
-from product.serializers import Image_colorSerializer
-from product.models import Product
+from product.models import Image_color, Product
 
 
 class CartProductSerializer(serializers.ModelSerializer):
@@ -20,8 +16,6 @@ class CartSerializer(serializers.ModelSerializer):
         return serializer.data
 
     def get_quantity(self, obj):
-        # print('\n\n\n\n')
-        # print(self.context, '-----------------------------------000000000000', obj.color)
         return self.context[str(obj.image_color.id)]['colors'][str(obj.id)]
 
     quantity = serializers.SerializerMethodField('get_quantity')
