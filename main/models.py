@@ -1,11 +1,14 @@
-from tabnanny import verbose
-from django.db import models
 from ckeditor.fields import RichTextField
 from django.core.validators import RegexValidator
+from django.db import models
+
 
 class AboutUs(models.Model):
-    title = models.CharField(max_length=255)
-    text = RichTextField()
+    """
+    О нас
+    """
+    title = models.CharField(max_length=255, verbose_name='Заголовок')
+    text = RichTextField(verbose_name='Текст')
 
     def __str__(self):
         return 'О нас'
@@ -31,10 +34,13 @@ class AboutUsImage(models.Model):
         verbose_name_plural = 'Фотографии'    
 
 
-class Advantage(models.Model):      # наши преимущества
-    title = models.CharField(max_length=255)
-    text = models.TextField()
-    img = models.ImageField(upload_to='advantage/')
+class Advantage(models.Model):
+    """
+    Наши преимущества
+    """
+    title = models.CharField(max_length=255, verbose_name='Заголовок')
+    text = models.TextField(verbose_name='Текст')
+    img = models.ImageField(upload_to='advantage/', verbose_name='Фотография')
 
     def __str__(self):
         return self.title
@@ -45,8 +51,11 @@ class Advantage(models.Model):      # наши преимущества
 
 
 class PublicOffer(models.Model):
-    title = models.CharField(max_length=255, null=True)
-    text = RichTextField()
+    """
+    Публичная оферта
+    """
+    title = models.CharField(max_length=255, null=True, verbose_name='Заголовок')
+    text = RichTextField(verbose_name='Текст')
 
     def __str__(self):
         return self.title
@@ -57,8 +66,11 @@ class PublicOffer(models.Model):
 
 
 class Slider(models.Model):
-    link = models.URLField(null=True)
-    image = models.ImageField(upload_to='slider/', null=True)
+    """
+    Слайдер
+    """
+    link = models.URLField(null=True, verbose_name='Ссылка')
+    image = models.ImageField(upload_to='slider/', null=True, verbose_name='Фотография')
 
     def __str__(self):
         return f"Слайдер {self.id}"
@@ -69,7 +81,10 @@ class Slider(models.Model):
 
 
 class Help_img(models.Model):
-    image = models.ImageField(upload_to='help/')
+    """
+    Фотография для модели "Помощь"
+    """
+    image = models.ImageField(upload_to='help/', verbose_name='Фотография')
 
     def __str__(self):
         return 'Помощь'
@@ -80,9 +95,12 @@ class Help_img(models.Model):
 
 
 class Help(models.Model):
-    image = models.ForeignKey(Help_img, on_delete=models.CASCADE, related_name='questions', null=True)
-    question = models.TextField()
-    answer = models.TextField()
+    """
+    Страница помощь
+    """
+    image = models.ForeignKey(Help_img, on_delete=models.CASCADE, related_name='questions', null=True, verbose_name='Фотография')
+    question = models.TextField(verbose_name='Вопрос')
+    answer = models.TextField(verbose_name='Ответ')
 
     def __str__(self):
         return f"{self.question}"
@@ -93,20 +111,20 @@ class Help(models.Model):
 
 
 class Call_back(models.Model):
-
+    """
+    Обратный звонок
+    """
     CHOICES = (
         ('1', 'Нет'),
         ('2', 'Да')
     )
 
-    name = models.CharField(max_length=255)
-
+    name = models.CharField(max_length=255, verbose_name='ФИО')
     phone_regex = RegexValidator(regex=r'(\+996)\(\d{3}\)\d{2}-\d{2}-\d{2}', message="Phone number must be entered in the format: '+996(700)12-34-56'.")
-    phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True, default='+996(700)12-34-56')
-
-    date = models.DateTimeField(auto_now_add=True)
-    type = models.CharField(max_length=255)
-    status = models.CharField(max_length=5,  choices = CHOICES, default=1)
+    phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True, default='+996(700)12-34-56', verbose_name='Номер телефона')
+    date = models.DateTimeField(auto_now_add=True, verbose_name='Дата')
+    type = models.CharField(max_length=255, verbose_name='Тип звонка')
+    status = models.CharField(max_length=5,  choices = CHOICES, default=1, verbose_name='Статус')
 
     def __str__(self):
         return f'Звонок клиента: {self.name} в {self.date}'
@@ -117,9 +135,12 @@ class Call_back(models.Model):
 
 
 class Footer_first_side(models.Model):
-    logo = models.ImageField()
-    info = models.TextField()
-    number = models.IntegerField()
+    """
+    Футер первая вкладка
+    """
+    logo = models.ImageField(verbose_name='Логотип')
+    info = models.TextField(verbose_name='Тестовая информация')
+    number = models.IntegerField(verbose_name='Номер в хедере')
 
     def __str__(self):
         return 'Footer'
@@ -130,6 +151,9 @@ class Footer_first_side(models.Model):
 
 
 class Footer_second_side(models.Model):
+    """
+    Футер вторая вкладка
+    """
     SOCIAL = (
         ('phone', 'phone'),
         ('email', 'email'),
@@ -138,15 +162,14 @@ class Footer_second_side(models.Model):
         ('whatsapp', 'whatsapp')
     )
 
-    social = models.CharField(max_length=255, choices=SOCIAL)
-    link = models.TextField()
+    social = models.CharField(max_length=255, choices=SOCIAL, verbose_name='Контакты')
+    link = models.TextField(verbose_name='Ссылка')
     footer = models.ForeignKey(Footer_first_side, on_delete=models.CASCADE, related_name='link', null=True, blank=True, default=None)
 
     def save(self):
         if self.social == 'whatsapp':
             self.link = 'https://wa.me/'+self.link
         super(Footer_second_side, self).save()
-
 
     def __str__(self):
         return self.social

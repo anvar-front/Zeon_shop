@@ -1,14 +1,15 @@
-from email.policy import default
-from tabnanny import verbose
 from django.db import models
 from colorfield.fields import ColorField
 from ckeditor.fields import RichTextField
 import math
 
 
-class  Collection(models.Model):        # Коллекция
-    image = models.ImageField(upload_to='collection/')
-    title = models.CharField(max_length=255)
+class  Collection(models.Model):
+    """
+    Модель дл коллекции
+    """
+    image = models.ImageField(upload_to='collection/', verbose_name='Фотография')
+    title = models.CharField(max_length=255, verbose_name='Наименование')
 
     def __str__(self):
         return self.title
@@ -20,21 +21,23 @@ class  Collection(models.Model):        # Коллекция
 
 
 class Product(models.Model):
-    """"""
-    collection = models.ForeignKey(Collection, on_delete=models.CASCADE, related_name='products')
-    name = models.CharField(max_length=255)
-    vendor_code = models.CharField(max_length=255)      # артикул товара
-    price = models.IntegerField()
-    discount = models.IntegerField(null=True,blank=True, default=0)
-    new_price = models.FloatField(null=True, blank=True, default=0)
-    description = RichTextField()
-    size_range = models.CharField(max_length=20)
-    fabric_structure = models.CharField(max_length=255)     # состав ткани
-    quantity = models.IntegerField(null=True, blank=True, default=5)
-    material = models.CharField(max_length=255)
-    bestseller = models.BooleanField(default=False)
-    new = models.BooleanField(default=True)
-    favorite = models.BooleanField(default=False)
+    """
+    Модель для товара
+    """
+    collection = models.ForeignKey(Collection, on_delete=models.CASCADE, related_name='products', verbose_name='Коллекция')
+    name = models.CharField(max_length=255, verbose_name='Наименование')
+    vendor_code = models.CharField(max_length=255, verbose_name='Артикул')
+    price = models.IntegerField(verbose_name='Цена')
+    discount = models.IntegerField(null=True,blank=True, default=0, verbose_name='Скидка')
+    new_price = models.FloatField(null=True, blank=True, default=0, verbose_name='Цена после скидки')
+    description = RichTextField(verbose_name='Описание')
+    size_range = models.CharField(max_length=20, verbose_name='Размерный ряд')
+    fabric_structure = models.CharField(max_length=255, verbose_name='Состав ткани')
+    quantity = models.IntegerField(null=True, blank=True, default=0, verbose_name='Количество')
+    material = models.CharField(max_length=255, verbose_name='Материал')
+    bestseller = models.BooleanField(default=False, verbose_name='Хит продаж')
+    new = models.BooleanField(default=True, verbose_name='Новый')
+    favorite = models.BooleanField(default=False, verbose_name='Избранный')
 
     def save(self):
         if self.discount != 0:
@@ -56,8 +59,11 @@ class Product(models.Model):
 
 
 class Image_color(models.Model):
-    image = models.ImageField(upload_to='product/')
-    color = ColorField(default='#fff')
+    """
+    Фотография и цвет товара (связаны)
+    """
+    image = models.ImageField(upload_to='product/', verbose_name='Фотография')
+    color = ColorField(default='#fff', verbose_name='Цвет')
     image_color = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
 
     def __str__(self):

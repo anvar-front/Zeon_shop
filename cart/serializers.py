@@ -1,5 +1,8 @@
+from asyncore import read
+from importlib.resources import read_binary
 from rest_framework import serializers
 from product.models import Image_color, Product
+from .models import *
 
 
 class CartProductSerializer(serializers.ModelSerializer):
@@ -23,3 +26,12 @@ class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image_color
         fields = ['quantity', 'image', 'color', 'product']
+
+
+class OrdersSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=30)
+    first_name = serializers.CharField(max_length=30)
+    email = serializers.CharField(max_length=30)
+    phone_number = serializers.CharField(max_length=30)
+    country = serializers.CharField(max_length=30)
+    city = serializers.CharField(max_length=30)

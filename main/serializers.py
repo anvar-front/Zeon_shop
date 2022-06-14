@@ -5,6 +5,9 @@ from .models import *
 
 
 class AboutUsSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор для страницы "О нас"
+    """
     about_img = serializers.StringRelatedField(many=True)
 
     class Meta:
@@ -13,24 +16,36 @@ class AboutUsSerializer(serializers.ModelSerializer):
 
 
 class AdvantageSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор для преимуществ
+    """
     class Meta:
         model = Advantage
         fields = '__all__'
 
 
 class PublicOfferSerializer(serializers.ModelSerializer):
+    """
+    Сериализтор для страницы 'Публичная оферта'
+    """
     class Meta:
         model = PublicOffer
         fields = '__all__'
 
 
 class SliderSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор для слайдера
+    """
     class Meta:
         model = Slider
         fields = ['link', 'image']
 
 
 class HelpSerializer(serializers.ModelSerializer):
+    """
+    Помощь
+    """
     class Meta:
         model = Help
         fields = '__all__'
@@ -44,6 +59,9 @@ class Help_imgSerializer(serializers.ModelSerializer):
 
 
 class Call_backSerializer(serializers.ModelSerializer):
+    """
+    Обратная связь
+    """
     class Meta:
         model = Call_back
         fields = ['name', 'phone_number', 'type']
@@ -57,6 +75,9 @@ class Footer_second_sideSerializer(serializers.ModelSerializer):
 
 
 class Footer_first_sideSerializer(serializers.ModelSerializer):
+    """
+    Футер
+    """
     link = Footer_second_sideSerializer(many=True)
     class Meta:
         model = Footer_first_side

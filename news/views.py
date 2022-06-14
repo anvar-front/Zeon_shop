@@ -1,21 +1,26 @@
-from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-
-from .serializers import NewsSerializer
 from .models import News
 from .pagination import PaginationHandlerMixin
+from .serializers import NewsSerializer
 
 
 class BasicPagination(PageNumberPagination):
+    """
+    Пагинация
+    """
     page_size = 8
     page_size_query_param = 'limit'
     max_page_size = 100
 
 
 class NewsAPIView(APIView, PaginationHandlerMixin):
+    """
+    Представление для новостей
+    """
     pagination_class = BasicPagination
     serializer_class = NewsSerializer
 

@@ -1,4 +1,5 @@
 from django.urls import path
+
 from product.views import *
 
 urlpatterns = [
@@ -8,6 +9,4 @@ urlpatterns = [
     path('by_collection/', Product_by_collectionAPIView.as_view()),
     path('new/', New_productAPIView.as_view()),
     path('favorite/', Favorite_productAPIView.as_view())
-
-
 ]

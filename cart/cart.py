@@ -6,7 +6,7 @@ from product.models import Product, Image_color
 class Cart(object):
     def __init__(self, request):
         """
-        Инициализируем корзину
+        Инициализация корзины
         """
         self.session = request.session
         cart = self.session.get(settings.CART_SESSION_ID)

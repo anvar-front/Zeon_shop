@@ -1,17 +1,19 @@
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from drf_multiple_model.views import ObjectMultipleModelAPIView
+from product.models import *
+from product.serializers import *
 from rest_framework import status
 from rest_framework.generics import CreateAPIView
-from drf_multiple_model.views import ObjectMultipleModelAPIView
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from .models import *
 from .serializers import *
 
-from product.models import *
-from product.serializers import *
-
 
 class AboutUsAPIView(APIView):
-
+    """
+    О нас
+    """
     def get(self, request, format=None):
         about = AboutUs.objects.all()
         serializer = AboutUsSerializer(about, many=True)
@@ -19,7 +21,9 @@ class AboutUsAPIView(APIView):
 
 
 class AdvantageAPIView(APIView):
-
+    """
+    Преимущества
+    """
     def get(self, request, format=None):
         advantage = Advantage.objects.all()
         serializer = AdvantageSerializer(advantage, many=True)
@@ -27,7 +31,9 @@ class AdvantageAPIView(APIView):
 
 
 class PublicOfferAPIView(APIView):
-    
+    """
+    Публичная оферта
+    """
     def get(self, request, format=None):
         publicoffer = PublicOffer.objects.all()
         serializer = PublicOfferSerializer(publicoffer, many=True)
@@ -35,7 +41,9 @@ class PublicOfferAPIView(APIView):
 
 
 class SliderAPIView(APIView):
-
+    """
+    Слайдер
+    """
     def get(self, request, format=None):
         slider = Slider.objects.all()
         serializer = SliderSerializer(slider, many=True)
@@ -43,7 +51,9 @@ class SliderAPIView(APIView):
 
 
 class HelpAPIView(APIView):
-    
+    """
+    Помощь
+    """
     def get(self, request, format=None):
         help = Help.objects.all()
         serializer = HelpSerializer(help, many=True)
@@ -59,13 +69,17 @@ class Help_imgAPIView(APIView):
 
 
 class Call_backAPIView(CreateAPIView):
-
+    """
+    Обратная связь
+    """
     queryset = Call_back.objects.all()
     serializer_class = Call_backSerializer
 
 
 class Footer_first_sideAPIView(APIView):
-
+    """
+    Футер
+    """
     def get(self, request, format=None):
         footer = Footer_first_side.objects.all()
         serializer = Footer_first_sideSerializer(footer, many=True)
@@ -73,6 +87,9 @@ class Footer_first_sideAPIView(APIView):
 
 
 class Main_pageAPIView(ObjectMultipleModelAPIView):
+    """
+    Главная страница
+    """
     querylist = [
         {'queryset': Slider.objects.all(), 'serializer_class': SliderSerializer},
         {'queryset': Product.objects.filter(bestseller=True)[:8], 'serializer_class': ProductSerializer},

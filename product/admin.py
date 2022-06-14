@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import *
 
+from .models import *
 
 
 class ProductImgColor(admin.TabularInline):
@@ -13,6 +13,7 @@ class ProductImgColor(admin.TabularInline):
 class ProductAdmin(admin.ModelAdmin):
     list_display = [field.name for field in Product._meta.fields]
     inlines = [ProductImgColor]
+    readonly_fields = ('quantity',)
 
 
 admin.site.register(Product, ProductAdmin)

@@ -1,21 +1,31 @@
-from rest_framework import serializers
-from .models import *
 from django.db.models import Q
+from rest_framework import serializers
+
+from .models import *
 
 
 class CollectionSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор для коллекции
+    """
     class Meta:
         model = Collection
         fields = '__all__'
 
 
 class Image_colorSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор для фотографии и цвета для продукта
+    """
     class Meta:
         model = Image_color
         fields = ['image', 'color']
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор для продукта
+    """
     images = Image_colorSerializer(many=True)
     class Meta:
         model = Product
@@ -35,6 +45,9 @@ class SecondProductSerializer(serializers.ModelSerializer):
 
 
 class Product_itemSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор для определенного товара (выводит еще 5 продуктов из этой же коллекции)
+    """
     similar = serializers.SerializerMethodField('similarity')
     images = Image_colorSerializer(many=True)
     class Meta:
@@ -52,6 +65,9 @@ class Product_itemSerializer(serializers.ModelSerializer):
 
 
 class Product_by_collectionSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор для вывода всех товаров по коллекциям
+    """
     products = SecondProductSerializer(many=True)
     class Meta:
         model = Collection
