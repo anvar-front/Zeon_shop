@@ -44,8 +44,8 @@ class Product(models.Model):
             self.new_price = self.price - ((self.price * self.discount) / 100)
         else:
             self.new_price = self.price
-
-        self.quantity = math.floor(((int(self.size_range[3:]) - int(self.size_range[:2])) / 2)) + 1
+        size = self.size_range.split("-")
+        self.quantity = math.floor(((int(size[1]) - int(size[0])) / 2)) + 1
         super(Product, self).save()
 
     def __str__(self):

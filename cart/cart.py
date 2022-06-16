@@ -87,7 +87,6 @@ class Cart(object):
         """
         Подсчет стоимости товаров в корзине.
         """
-        print(self.cart)
         return {"price": sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values()),
                 "discount": sum(Decimal(item['new_price']) * item['quantity'] for item in self.cart.values())}
         

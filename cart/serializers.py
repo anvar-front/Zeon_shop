@@ -1,20 +1,17 @@
-from asyncore import read
-from importlib.resources import read_binary
 from rest_framework import serializers
 from product.models import Image_color, Product
 from .models import *
 
 
 class CartProductSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Product
         fields = ['id', 'name', 'price', 'discount', 'new_price', 'size_range']
 
 
 class CartSerializer(serializers.ModelSerializer):
-
     def get_product(self, obj):
+        print(self.context, '-------------------------1--------------------')
         serializer = CartProductSerializer(obj.image_color, context=self.context)
         return serializer.data
 

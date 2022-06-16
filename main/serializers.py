@@ -64,7 +64,7 @@ class Call_backSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Call_back
-        fields = ['name', 'phone_number', 'type']
+        fields = ['name', 'phone_number', 'type', 'date']
 
 
 class Footer_second_sideSerializer(serializers.ModelSerializer):

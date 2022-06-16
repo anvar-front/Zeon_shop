@@ -1,6 +1,8 @@
+from wsgiref.validate import validator
 from ckeditor.fields import RichTextField
 from django.core.validators import RegexValidator
 from django.db import models
+from .validate import validate_SVG_PNG
 
 
 class AboutUs(models.Model):
@@ -40,7 +42,7 @@ class Advantage(models.Model):
     """
     title = models.CharField(max_length=255, verbose_name='Заголовок')
     text = models.TextField(verbose_name='Текст')
-    img = models.ImageField(upload_to='advantage/', verbose_name='Фотография')
+    img = models.ImageField(upload_to='advantage/', verbose_name='Фотография', validators=(validate_SVG_PNG,))
 
     def __str__(self):
         return self.title
@@ -138,7 +140,7 @@ class Footer_first_side(models.Model):
     """
     Футер первая вкладка
     """
-    logo = models.ImageField(verbose_name='Логотип')
+    logo = models.ImageField(verbose_name='Логотип', validators=(validate_SVG_PNG,))
     info = models.TextField(verbose_name='Тестовая информация')
     number = models.IntegerField(verbose_name='Номер в хедере')
 

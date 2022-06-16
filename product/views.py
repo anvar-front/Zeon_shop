@@ -105,7 +105,7 @@ class New_productAPIView(APIView):
 
 class Favorite_productAPIView(APIView, PaginationHandlerMixin):
     """
-    Представление для избранныз продуктов
+    Представление для избранных продуктов
     """
     def get(self, request, format=None):
         qs = list(Product.objects.filter(favorite=True))

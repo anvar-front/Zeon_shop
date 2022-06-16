@@ -93,44 +93,46 @@ class OrderAPIView(CreateAPIView):
     def post(self, request, *args, **kwargs):
 
         cart = Cart(request)
-
-        name = request.data['name']
-        first_name = request.data['first_name']
-        email = request.data['email']
-        phone_number = request.data['phone_number']
-        country = request.data['country']
-        city = request.data['city']
-        order = Orders.objects.create(name=name, first_name=first_name, email=email, phone_number=phone_number, country=country, city=city)
-
-
-        price = cart.get_total_price()
-        check = Order_check.objects.create(
-            client = order,
-            quantity_line = cart.__len__(),
-            quantity = cart.get_total_quantity(),
-            price = price['price'],
-            discount = price['price'] - price['discount'],
-            final_price = price['discount']
-        )
+        
+        if cart.cart != {}:
+            name = request.data['name']
+            first_name = request.data['first_name']
+            email = request.data['email']
+            phone_number = request.data['phone_number']
+            country = request.data['country']
+            city = request.data['city']
+            order = Orders.objects.create(name=name, first_name=first_name, email=email, phone_number=phone_number, country=country, city=city)
 
 
-        for key, item in cart.cart.items():
-            print(item, '---------------------')
-            for id, color in item['colors'].items():
-                # print(item['price'], '------------------------------')
-                image = Image_color.objects.get(id=int(id))
-                price = item['price']
-                new_price = item['new_price']
-                quantity = color
-                Product_to_Order.objects.create(client=check, 
-                                                price=price, 
-                                                new_price=new_price, 
-                                                quantity=quantity, 
-                                                image=image.image, 
-                                                color=image.color, 
-                                                name=image.image_color.name, 
-                                                size_range=image.image_color.size_range
-                                                )
+            price = cart.get_total_price()
+            check = Order_check.objects.create(
+                client = order,
+                quantity_line = cart.__len__(),
+                quantity = cart.get_total_quantity(),
+                price = price['price'],
+                discount = price['price'] - price['discount'],
+                final_price = price['discount']
+            )
 
-        cart.clear()
-        return Response(self.serializer_class(order).data)
+       
+            for key, item in cart.cart.items():
+                for id, color in item['colors'].items():
+                    image = Image_color.objects.get(id=int(id))
+                    price = item['price']
+                    new_price = item['new_price']
+                    quantity = color
+                    Product_to_Order.objects.create(client=check, 
+                                                    price=price, 
+                                                    new_price=new_price, 
+                                                    quantity=quantity, 
+                                                    image=image.image, 
+                                                    color=image.color, 
+                                                    name=image.image_color.name, 
+                                                    size_range=image.image_color.size_range
+                                                    )
+
+            cart.clear()
+            # return Response(self.serializer_class(order).data)
+            return Response({'status': 'success'})
+        else:
+            return Response({"status": "cart is empty"})
