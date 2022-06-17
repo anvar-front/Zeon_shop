@@ -4,6 +4,8 @@ from django.core.validators import RegexValidator
 from django.db import models
 from .validate import validate_SVG_PNG
 
+from datetime import datetime
+
 
 class AboutUs(models.Model):
     """
@@ -92,8 +94,8 @@ class Help_img(models.Model):
         return 'Помощь'
 
     class Meta:
-        verbose_name = 'Фотография для помощи'
-        verbose_name_plural = 'Фотография для помощи'
+        verbose_name = 'Помощь'
+        verbose_name_plural = verbose_name
 
 
 class Help(models.Model):
@@ -124,7 +126,7 @@ class Call_back(models.Model):
     name = models.CharField(max_length=255, verbose_name='ФИО')
     phone_regex = RegexValidator(regex=r'(\+996)\(\d{3}\)\d{2}-\d{2}-\d{2}', message="Phone number must be entered in the format: '+996(700)12-34-56'.")
     phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True, default='+996(700)12-34-56', verbose_name='Номер телефона')
-    date = models.DateTimeField(auto_now_add=True, verbose_name='Дата')
+    date = models.DateTimeField(default=datetime.now, verbose_name='Дата')
     type = models.CharField(max_length=255, verbose_name='Тип звонка')
     status = models.CharField(max_length=5,  choices = CHOICES, default=1, verbose_name='Статус')
 

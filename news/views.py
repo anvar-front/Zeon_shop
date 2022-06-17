@@ -2,6 +2,7 @@ from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import permissions
 
 from .models import News
 from .pagination import PaginationHandlerMixin
@@ -23,6 +24,7 @@ class NewsAPIView(APIView, PaginationHandlerMixin):
     """
     pagination_class = BasicPagination
     serializer_class = NewsSerializer
+    permission_classes = [permissions.AllowAny]
 
     def get(self, request, format=None, *args, **kwargs):
         news = News.objects.all()

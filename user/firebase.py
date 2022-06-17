@@ -1,5 +1,5 @@
 import pyrebase
-import firebase
+
 config = {
   'apiKey': "AIzaSyDZ-bjG_7eeSt6JddoSoJFiuZMilL20ULg",
   'authDomain': "zeonshop-aa50d.firebaseapp.com",

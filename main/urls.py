@@ -10,6 +10,5 @@ urlpatterns = [
     path('help', HelpAPIView.as_view()),
     path('help_img', Help_imgAPIView.as_view()),
     path('call_back', Call_backAPIView.as_view()),
-    path('footer', Footer_first_sideAPIView.as_view()),
-    path('main', Main_pageAPIView.as_view())
+    path('footer', Footer_first_sideAPIView.as_view())
 ]

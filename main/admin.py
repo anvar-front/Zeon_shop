@@ -83,15 +83,24 @@ class Footer_first_sideAdmin(admin.ModelAdmin):
 
 class Call_backAdmin(admin.ModelAdmin):
     list_display = ('name', 'phone_number', 'type', 'status')
-    list_filter =('status',)
+    list_filter = ('status',)
     search_fields = ('name', 'phone_number')
+    readonly_fields = ('date',)
+
+
+class HelpInline(admin.StackedInline):
+    model = Help
+    extra = 0
+
+
+class Help_imgAdmin(admin.ModelAdmin):
+    inlines = [HelpInline]
 
 
 admin.site.register(Slider)
 admin.site.register(AboutUs, AboutUsAdmin)
 admin.site.register(PublicOffer, PublicOfferAdmin)
 admin.site.register(Advantage)
-admin.site.register(Help)
-admin.site.register(Help_img)
+admin.site.register(Help_img, Help_imgAdmin)
 admin.site.register(Call_back, Call_backAdmin)
 admin.site.register(Footer_first_side, Footer_first_sideAdmin)

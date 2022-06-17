@@ -22,10 +22,13 @@ schema_view = get_schema_view(
 
 urlpatterns = [
    path('admin/', admin.site.urls),
+   path('api-auth/', include('rest_framework.urls')),
    path('api/v1/main/', include('main.urls')),
    path('api/v1/news/', include('news.urls')),
    path('api/v1/cart/', include('cart.urls')),
    path('api/v1/product/', include('product.urls')),
+   path('api/v1/user/', include('user.urls')),
+
 
    #swagger
    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
