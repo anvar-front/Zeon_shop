@@ -150,8 +150,8 @@ class Footer_first_side(models.Model):
         return 'Footer'
 
     class Meta:
-        verbose_name = 'Footer'
-        verbose_name_plural = 'Footer'
+        verbose_name = 'Футер'
+        verbose_name_plural = verbose_name
 
 
 class Footer_second_side(models.Model):
@@ -168,7 +168,8 @@ class Footer_second_side(models.Model):
 
     social = models.CharField(max_length=255, choices=SOCIAL, verbose_name='Контакты')
     link = models.TextField(verbose_name='Ссылка')
-    footer = models.ForeignKey(Footer_first_side, on_delete=models.CASCADE, related_name='link', null=True, blank=True, default=None)
+    footer = models.ForeignKey(Footer_first_side, on_delete=models.CASCADE, related_name='link', 
+        null=True, blank=True, default=None)
 
     def save(self):
         if self.social == 'whatsapp':

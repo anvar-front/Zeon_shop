@@ -4,12 +4,26 @@ from super_inlines.admin import SuperInlineModelAdmin, SuperModelAdmin
 
 from .models import Orders, Product_to_Order, Order_check
 
+from django.utils.safestring import mark_safe
+
 
 class Product_to_OrderInline(SuperInlineModelAdmin, TabularInline):
     model = Product_to_Order
     extra = 0
-    readonly_fields = ('client', 'image', 'color', 'name', 'size_range', 'price', 'new_price', 'quantity')
+    readonly_fields = ('client', 'product_image_tag', 'product_color_tag', 'name', 'size_range', 'price', 'new_price', 'quantity')
+    fields = ('client', 'product_image_tag', 'product_color_tag', 'name', 'size_range', 'price', 'new_price', 'quantity')
     can_delete = False
+
+    def product_image_tag(self, obj):
+        """Отображение картинки в админ панели"""
+        return mark_safe('<img src="%s" width="150" height="150" />' % (obj.image.url))
+
+    def product_color_tag(self, obj):
+        """Отображение цвета в админ панели"""
+        return mark_safe('<img style="background-color:%s" width="150" height="30" />' % (obj.color))
+
+    product_image_tag.short_description = 'Фотография'
+    product_color_tag.short_description = 'Цвет'
 
 
 class OrderInline(SuperInlineModelAdmin, StackedInline):

@@ -1,15 +1,18 @@
 from django.shortcuts import get_object_or_404
+from product.models import Image_color, Product
+from rest_framework import permissions
+from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import CreateAPIView
 
 from .cart import Cart
-from product.models import Product, Image_color
-from .serializers import *
 from .models import *
+from .serializers import *
 
 
 class AddToCart(APIView):
+
+    permission_classes = [permissions.AllowAny,]
     """
     Добавление товара в корзину
     """
@@ -34,6 +37,7 @@ class AddToCart(APIView):
 
 
 class GetCart(APIView):
+    permission_classes = [permissions.AllowAny]
     """
     Получение товара из корзины
     """
@@ -62,6 +66,7 @@ class CartRemove(APIView):
     Удаление товара из корзины
     Если в теле запроса указать {minus: true} 
     """
+    permission_classes = [permissions.AllowAny]
     def post(self, request, pk):
         cart = Cart(request)
         product = get_object_or_404(Product, id=pk)
@@ -78,7 +83,10 @@ class CartRemove(APIView):
 
 
 class ClearCart(APIView):
-
+    """
+    Args:
+        APIView: Для чистки корзины. Полностью удаляет товары с корзины
+    """
     def get(self, request, format=None):
         cart = Cart(request)
         cart.clear()
@@ -86,14 +94,19 @@ class ClearCart(APIView):
 
 
 class OrderAPIView(CreateAPIView):
+    """
+    Args:
+        CreateAPIView: Для оформления заказа
 
+    Returns:
+        Message: Возвращает статус заказа (success/cart is empty)
+    """
+    permission_classes = [permissions.AllowAny]
     queryset = Orders.objects.all()
     serializer_class = OrdersSerializer
 
     def post(self, request, *args, **kwargs):
-
         cart = Cart(request)
-        
         if cart.cart != {}:
             name = request.data['name']
             first_name = request.data['first_name']
@@ -101,8 +114,24 @@ class OrderAPIView(CreateAPIView):
             phone_number = request.data['phone_number']
             country = request.data['country']
             city = request.data['city']
-            order = Orders.objects.create(name=name, first_name=first_name, email=email, phone_number=phone_number, country=country, city=city)
-
+            if request.user.is_authenticated:
+                order = Orders.objects.create(
+                    name=name, 
+                    first_name=first_name, 
+                    email=email, 
+                    phone_number=phone_number, 
+                    country=country, city=city, 
+                    user=request.user
+                )
+            else:
+                order = Orders.objects.create(
+                    name=name, 
+                    first_name=first_name, 
+                    email=email, 
+                    phone_number=phone_number, 
+                    country=country, 
+                    city=city
+                )
 
             price = cart.get_total_price()
             check = Order_check.objects.create(
@@ -114,25 +143,23 @@ class OrderAPIView(CreateAPIView):
                 final_price = price['discount']
             )
 
-       
             for key, item in cart.cart.items():
                 for id, color in item['colors'].items():
                     image = Image_color.objects.get(id=int(id))
                     price = item['price']
                     new_price = item['new_price']
                     quantity = color
-                    Product_to_Order.objects.create(client=check, 
-                                                    price=price, 
-                                                    new_price=new_price, 
-                                                    quantity=quantity, 
-                                                    image=image.image, 
-                                                    color=image.color, 
-                                                    name=image.image_color.name, 
-                                                    size_range=image.image_color.size_range
-                                                    )
-
+                    Product_to_Order.objects.create(
+                        client=check, 
+                        price=price, 
+                        new_price=new_price, 
+                        quantity=quantity, 
+                        image=image.image, 
+                        color=image.color, 
+                        name=image.image_color.name, 
+                        size_range=image.image_color.size_range
+                    )
             cart.clear()
-            # return Response(self.serializer_class(order).data)
             return Response({'status': 'success'})
         else:
             return Response({"status": "cart is empty"})

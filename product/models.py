@@ -3,6 +3,10 @@ from colorfield.fields import ColorField
 from ckeditor.fields import RichTextField
 import math
 
+from django.core.exceptions import ValidationError
+
+from user.models import User
+
 
 class  Collection(models.Model):
     """
@@ -19,7 +23,6 @@ class  Collection(models.Model):
         verbose_name_plural = 'Коллекции'
 
 
-
 class Product(models.Model):
     """
     Модель для товара
@@ -31,7 +34,7 @@ class Product(models.Model):
     discount = models.IntegerField(null=True,blank=True, default=0, verbose_name='Скидка')
     new_price = models.FloatField(null=True, blank=True, default=0, verbose_name='Цена после скидки')
     description = RichTextField(verbose_name='Описание')
-    size_range = models.CharField(max_length=20, verbose_name='Размерный ряд')
+    size_range = models.CharField(max_length=20, verbose_name='Размерный ряд', help_text='Пример: 42-50')
     fabric_structure = models.CharField(max_length=255, verbose_name='Состав ткани')
     quantity = models.IntegerField(null=True, blank=True, default=0, verbose_name='Количество')
     material = models.CharField(max_length=255, verbose_name='Материал')
@@ -44,18 +47,20 @@ class Product(models.Model):
             self.new_price = self.price - ((self.price * self.discount) / 100)
         else:
             self.new_price = self.price
+        
         size = self.size_range.split("-")
+        for i in size:
+            if not i.isdigit():
+                raise ValidationError('Введите валидное значение')
         self.quantity = math.floor(((int(size[1]) - int(size[0])) / 2)) + 1
         super(Product, self).save()
 
     def __str__(self):
         return self.name
 
-
     class Meta:
         verbose_name = "Товар"
         verbose_name_plural = "Товары"
-
 
 
 class Image_color(models.Model):
@@ -68,11 +73,11 @@ class Image_color(models.Model):
 
     def __str__(self):
         return f'Image: {self.image} -  Color: {self.color}'
-    
 
 
-
-
-
-
-
+class Favorite(models.Model):
+    """
+    Избранные товары авторизованного юзера
+    """
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='favorite_products')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorite_user')

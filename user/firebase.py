@@ -13,13 +13,3 @@ config = {
 
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
-
-email = 'anvarashyrbekov147as@mail.ru'
-password = ''
-
-res = auth.create_user_with_email_and_password(email, password)
-
-# test = auth.sign_in_with_email_and_password(email, password)
-
-print(res)
-# print(test)

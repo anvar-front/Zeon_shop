@@ -1,0 +1,59 @@
+version: '3'
+
+services:
+  zeon_web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+#    command: bash -c "python manage.py migrate --no-input && python manage.py collectstatic --no-input && gunicorn labsite_landing.wsgi:application --bind 0.0.0.0:8000 --timeout 600 --workers 3"
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/zeon
+      - ./static:/static
+      - ./media:/media
+    ports:
+      - 8000:8000
+#    expose:
+#      - "8000"
+    env_file:
+      - .env
+    restart: "on-failure"
+    depends_on:
+      - db
+    networks:
+      - zeon-network
+
+  db:
+    image: postgres:10.5-alpine
+    ports:
+      - 5433:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    restart: "on-failure"
+    networks:
+      zeon-network:
+
+#  nginx:
+#    build:
+#      context: ./nginx
+#      dockerfile: Dockerfile
+#
+#    volumes:
+#      - ./static:/landing/staticfiles
+#      - ./media:/landing/media
+#    ports:
+#      - 443:443
+#      - 8000:80
+#    depends_on:
+#      - labnet
+
+volumes:
+  postgres_data:
+
+networks:
+  zeon-network:
+    driver: bridge

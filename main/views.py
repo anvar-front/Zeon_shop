@@ -74,6 +74,7 @@ class Help_imgAPIView(APIView):
 
 
 class Call_backAPIView(CreateAPIView):
+    permission_classes = [permissions.AllowAny]
     """
     Обратная связь
     """

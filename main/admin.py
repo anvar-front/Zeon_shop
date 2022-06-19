@@ -9,6 +9,9 @@ class AboutUsImgInline(admin.TabularInline):
 
 
 class AboutUsAdmin (admin.ModelAdmin):
+    """
+    Открывает сразу редактор записи.
+    """
     list_display = [field.name for field in AboutUs._meta.fields]
     inlines = [AboutUsImgInline]
     model = AboutUs
@@ -22,7 +25,7 @@ class AboutUsAdmin (admin.ModelAdmin):
         return False
         
     def changelist_view(self, request, extra_context=None):
-        if self.model.objects.count() < 1:
+        if self.model.objects.count() == 0:
             return super().add_view(request, extra_context)
         else:
             object = (self.model.objects.first()).id
@@ -87,6 +90,9 @@ class Call_backAdmin(admin.ModelAdmin):
     search_fields = ('name', 'phone_number')
     readonly_fields = ('date',)
 
+    def has_add_permission(self, request):
+        return False
+
 
 class HelpInline(admin.StackedInline):
     model = Help
@@ -95,6 +101,21 @@ class HelpInline(admin.StackedInline):
 
 class Help_imgAdmin(admin.ModelAdmin):
     inlines = [HelpInline]
+
+    def has_add_permission(self, request):
+        if self.model.objects.count() >= 1:
+            return False
+        return True
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+        
+    def changelist_view(self, request, extra_context=None):
+        if self.model.objects.count() < 1:
+            return super().add_view(request, extra_context)
+        else:
+            object = (self.model.objects.first()).id
+            return super().change_view(request=request, extra_context=extra_context, object_id=str(object))
 
 
 admin.site.register(Slider)

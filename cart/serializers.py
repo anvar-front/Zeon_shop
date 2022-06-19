@@ -11,7 +11,6 @@ class CartProductSerializer(serializers.ModelSerializer):
 
 class CartSerializer(serializers.ModelSerializer):
     def get_product(self, obj):
-        print(self.context, '-------------------------1--------------------')
         serializer = CartProductSerializer(obj.image_color, context=self.context)
         return serializer.data
 

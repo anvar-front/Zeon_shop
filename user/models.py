@@ -1,11 +1,7 @@
 from django.db import models
-from django.conf import settings
 from django.contrib.auth.models import (
   AbstractBaseUser, BaseUserManager, PermissionsMixin
 )
-
-import jwt
-from datetime import timedelta, datetime
 
 
 class UserManager(BaseUserManager):
@@ -41,10 +37,15 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(unique=True)
+
+    email = models.EmailField(verbose_name='Электронная почта', unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     dateofadd = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Пользователи'
+        verbose_name_plural = verbose_name
 
     USERNAME_FIELD = 'email'
     

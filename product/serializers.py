@@ -29,7 +29,7 @@ class ProductSerializer(serializers.ModelSerializer):
     images = Image_colorSerializer(many=True)
     class Meta:
         model = Product
-        fields = ['id', 'name', 'collection', 'vendor_code', 'price', 'discount', 'new_price', 'description', 'material', 'quantity', 'size_range', 'favorite', 'images']
+        fields = ['id', 'name', 'collection', 'vendor_code', 'price', 'discount', 'new_price', 'description', 'material', 'quantity', 'size_range', 'images']
 
 
 """ 

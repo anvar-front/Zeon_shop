@@ -1,10 +1,8 @@
-from tkinter import N
 from django.db import models
 from colorfield.fields import ColorField
+from user.models import User
 
 from django.core.validators import RegexValidator
-from django.forms import CharField
-from django_countries.fields import CountryField
 
 
 class Orders(models.Model):
@@ -14,6 +12,7 @@ class Orders(models.Model):
         ('done', 'Оформлен'),
         ('denyed', 'Отменен')
     )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=30, verbose_name='Имя', null=True)
     first_name = models.CharField(max_length=30, verbose_name='Фамилия', null=True)
     email = models.EmailField(verbose_name='Электронная почта', null=True)
@@ -51,7 +50,6 @@ class Order_check(models.Model):
         verbose_name_plural = 'Чек'
     
 
-
 class Product_to_Order(models.Model):
     client = models.ForeignKey(Order_check, on_delete=models.CASCADE, null=True, related_name='product')
     image = models.ImageField(verbose_name='Фотография')
@@ -68,3 +66,4 @@ class Product_to_Order(models.Model):
     class Meta:
         verbose_name = 'Продукты'
         verbose_name_plural = 'Продукты'
+        

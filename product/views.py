@@ -87,32 +87,14 @@ class ProductDetailAPIView(APIView):
         return Response(serializer.data)
 
 
-class Product_by_collectionAPIView(APIView, PaginationHandlerMixin):
-    """
-    Поедставление для вывода продуктов по коллекциям
-    """
-    pagination_class = EightPagination
-    serializer_class = Product_by_collectionSerializer
-    permission_classes = [permissions.AllowAny]
-    
-    def get(self, request, format=None):
-        collection = Collection.objects.all()[:12]
-        page = self.paginate_queryset(collection)
-        if page is not None:
-            serializer = self.get_paginated_response(self.serializer_class(page,many=True).data)
-        else:
-            serializer = self.serializer_class(collection, many=True)
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-
 class Favorite_productAPIView(APIView, PaginationHandlerMixin):
     """
     Представление для избранных продуктов
     """
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
     def get(self, request, format=None):
-        qs = list(Product.objects.filter(favorite=True))
+        qs = Favorite.objects.filter(user=request.user)
+        qs = [product.product for product in qs]
         if len(qs) > 0:
             serializer = ProductSerializer(qs, many=True)
             return Response({"Количество": len(qs), "Избранные товары": serializer.data})
@@ -120,7 +102,23 @@ class Favorite_productAPIView(APIView, PaginationHandlerMixin):
             queryset = set(Product.objects.values_list('collection', flat=True))
             res = [random.choice(Product.objects.filter(collection=i)) for i in queryset]
             serializer = ProductSerializer(res, many=True)
-            return Response(serializer.data)
+            return Response({"Избранное": "У Вас пока нет избранных товаров", "Возможно Вас заинтересует": serializer.data})
+
+
+class Favorite_ADD(APIView):
+
+    permission_classes = [permissions.IsAuthenticated]
+    def get(self, request, pk, format=None):
+        Favorite(product_id=pk, user=request.user).save()
+        return Response({"status": "added"})
+
+
+class Favorite_REMOVE(APIView):
+
+    permission_classes = [permissions.IsAuthenticated]
+    def get(self, request, pk, format=None):
+        Favorite.objects.filter(product_id=pk, user=request.user).delete()
+        return Response({"status": "removed"})
 
 
 class Product_bestsellerAPIView(APIView, PaginationHandlerMixin):
