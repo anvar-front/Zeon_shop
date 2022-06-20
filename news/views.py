@@ -30,7 +30,9 @@ class NewsAPIView(APIView, PaginationHandlerMixin):
         news = News.objects.all()
         page = self.paginate_queryset(news)
         if page is not None:
-            serializer = self.get_paginated_response(self.serializer_class(page,many=True).data)
+            serializer = self.get_paginated_response(
+                self.serializer_class(page, many=True).data
+                )
         else:
             serializer = self.serializer_class(news, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

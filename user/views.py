@@ -17,10 +17,7 @@ class RegistrationAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
-        new = auth.create_user_with_email_and_password(request.data.get('email'), request.data.get('password'))
-        print(new)
-        print(request.data.get('email'))
-        print()
-        print(request.data.get('password'))
+        auth.create_user_with_email_and_password(request.data.get('email'),
+                                                 request.data.get('password'))
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)

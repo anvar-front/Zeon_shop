@@ -23,13 +23,15 @@ class AboutUsAdmin (admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return False
-        
+
     def changelist_view(self, request, extra_context=None):
         if self.model.objects.count() == 0:
             return super().add_view(request, extra_context)
         else:
             object = (self.model.objects.first()).id
-            return super().change_view(request=request, extra_context=extra_context, object_id=str(object))
+            return super().change_view(request=request,
+                                       extra_context=extra_context,
+                                       object_id=str(object))
 
     class Meta:
         model = AboutUs
@@ -43,13 +45,15 @@ class PublicOfferAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return False
-        
+
     def changelist_view(self, request, extra_context=None):
         if self.model.objects.count() < 1:
             return super().add_view(request, extra_context)
         else:
             object = (self.model.objects.first()).id
-            return super().change_view(request=request, extra_context=extra_context, object_id=str(object))
+            return super().change_view(request=request,
+                                       extra_context=extra_context,
+                                       object_id=str(object))
 
     class Meta:
         model = PublicOffer
@@ -62,7 +66,7 @@ class Footer_second_sideInline(admin.TabularInline):
 
 class Footer_first_sideAdmin(admin.ModelAdmin):
     list_display = [field.name for field in Footer_first_side._meta.fields]
-    inlines =  [Footer_second_sideInline]
+    inlines = [Footer_second_sideInline]
     model = Footer_first_side
 
     def has_add_permission(self, request):
@@ -72,20 +76,22 @@ class Footer_first_sideAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return False
-        
+
     def changelist_view(self, request, extra_context=None):
         if self.model.objects.count() < 1:
             return super().add_view(request, extra_context)
         else:
             object = (self.model.objects.first()).id
-            return super().change_view(request=request, extra_context=extra_context, object_id=str(object))
+            return super().change_view(request=request,
+                                       extra_context=extra_context,
+                                       object_id=str(object))
 
     class Meta:
         model = Footer_first_side
 
 
 class Call_backAdmin(admin.ModelAdmin):
-    list_display = ('name', 'phone_number', 'type', 'status')
+    list_display = ('name', 'phone_number', 'type', 'status', 'date')
     list_filter = ('status',)
     search_fields = ('name', 'phone_number')
     readonly_fields = ('date',)
@@ -109,13 +115,15 @@ class Help_imgAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return False
-        
+
     def changelist_view(self, request, extra_context=None):
         if self.model.objects.count() < 1:
             return super().add_view(request, extra_context)
         else:
             object = (self.model.objects.first()).id
-            return super().change_view(request=request, extra_context=extra_context, object_id=str(object))
+            return super().change_view(request=request,
+                                       extra_context=extra_context,
+                                       object_id=str(object))
 
 
 admin.site.register(Slider)

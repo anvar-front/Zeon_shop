@@ -19,7 +19,7 @@ class Cart(object):
         Добавить продукт в корзину или обновить его количество.
         """
         product_id = str(product.id)
-        
+
         if product_id not in self.cart:
             self.cart[product_id] = {
                                     'colors': {str(color.id): 0},
@@ -55,7 +55,7 @@ class Cart(object):
                 del self.cart[product_id]['colors'][str(color.id)]
                 if self.cart[product_id]['colors'] == {}:
                     del self.cart[product_id]
-            else: 
+            else:
                 self.cart[product_id]['colors'][str(color.id)] -= 1
                 self.cart[product_id]['quantity'] -= 1
             self.save()
@@ -67,14 +67,16 @@ class Cart(object):
         product_ids = self.cart.keys()
 
         # получаем все цвета товара из корзины
-        list_color = [list(color['colors'].keys()) for color in self.cart.values()]
-        list_color_normal = set().union(*list_color)
+        # l_color -> list_color
+        # col -> col
+        l_color = [list(col['colors'].keys()) for col in self.cart.values()]
+        list_color_normal = set().union(*l_color)
 
         # получаем все товары из корзины
         product_list = Product.objects.filter(id__in=product_ids)
 
         # получаем все цвета полученных продуктов
-        color_list = Image_color.objects.filter(id__in = list_color_normal)
+        color_list = Image_color.objects.filter(id__in=list_color_normal)
         # color_list = [Image_color.objects.get()]
         return {"products": product_list, "colors": color_list}
 
@@ -89,7 +91,7 @@ class Cart(object):
         """
         return {"price": sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values()),
                 "discount": sum(Decimal(item['new_price']) * item['quantity'] for item in self.cart.values())}
-        
+
     def __len__(self):
         """
         Подсчет всех товаров в корзине.
@@ -101,4 +103,3 @@ class Cart(object):
         Подсчет всех товаров из корзины (штук)
         """
         return sum(int(item['line_quantity']) * item['quantity'] for item in self.cart.values())
-

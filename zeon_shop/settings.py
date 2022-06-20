@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     'main',
     'news',
     'product',
-    'cart', 
+    'cart',
     'user'
 ]
 
@@ -96,10 +96,10 @@ WSGI_APPLICATION = 'zeon_shop.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config('NAME'),
-        'USER': config('USER'),
-        'PASSWORD': config('PASSWORD'),
-        'HOST': '127.0.0.1',
+        'NAME': config('NAME'),  # os.environ.get('POSTGRES_DB'),
+        'USER': config('USER'),  # os.environ.get('POSTGRES_USER'),
+        'PASSWORD': config('PASSWORD'),  # os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': '127.0.0.1',  # 'db',
         'PORT': '5432',
     }
 }
@@ -166,14 +166,12 @@ CKEDITOR_CONFIGS = {
              '-', 'Table',
              '-', 'Image',
              '-', 'Source',
-             '-', 'NumberedList', 'BulletedList'
-            ],
+             '-', 'NumberedList', 'BulletedList'],
             ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock',
              '-', 'Font', 'FontSize', 'TextColor',
              '-', 'Outdent', 'Indent',
              '-', 'HorizontalRule',
-             '-', 'Blockquote'
-            ]
+             '-', 'Blockquote']
         ],
         'height': 500,
         'width': '100%',

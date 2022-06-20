@@ -15,6 +15,7 @@ class AboutUsAPIView(APIView):
     О нас
     """
     permission_classes = [permissions.AllowAny]
+
     def get(self, request, format=None):
         about = AboutUs.objects.all()
         serializer = AboutUsSerializer(about, many=True)
@@ -26,6 +27,7 @@ class AdvantageAPIView(APIView):
     Преимущества
     """
     permission_classes = [permissions.AllowAny]
+
     def get(self, request, format=None):
         advantage = Advantage.objects.all()
         serializer = AdvantageSerializer(advantage, many=True)
@@ -37,6 +39,7 @@ class PublicOfferAPIView(APIView):
     Публичная оферта
     """
     permission_classes = [permissions.AllowAny]
+
     def get(self, request, format=None):
         publicoffer = PublicOffer.objects.all()
         serializer = PublicOfferSerializer(publicoffer, many=True)
@@ -48,6 +51,7 @@ class SliderAPIView(APIView):
     Слайдер
     """
     permission_classes = [permissions.AllowAny]
+
     def get(self, request, format=None):
         slider = Slider.objects.all()
         serializer = SliderSerializer(slider, many=True)
@@ -59,6 +63,7 @@ class HelpAPIView(APIView):
     Помощь
     """
     permission_classes = [permissions.AllowAny]
+
     def get(self, request, format=None):
         help = Help.objects.all()
         serializer = HelpSerializer(help, many=True)
@@ -66,7 +71,7 @@ class HelpAPIView(APIView):
 
 
 class Help_imgAPIView(APIView):
-    
+
     def get(self, request, format=None):
         help = Help_img.objects.all()
         serializer = Help_imgSerializer(help, many=True)
@@ -87,6 +92,7 @@ class Footer_first_sideAPIView(APIView):
     Футер
     """
     permission_classes = [permissions.AllowAny]
+
     def get(self, request, format=None):
         footer = Footer_first_side.objects.all()
         serializer = Footer_first_sideSerializer(footer, many=True)

@@ -26,11 +26,10 @@ urlpatterns = [
    path('api/v1/main/', include('main.urls')),
    path('api/v1/news/', include('news.urls')),
    path('api/v1/cart/', include('cart.urls')),
-   path('api/v1/product/', include('product.urls')),
+   path('api/v1/product/', include("product.urls")),
    path('api/v1/user/', include('user.urls')),
 
-
-   #swagger
+   # swagger
    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 

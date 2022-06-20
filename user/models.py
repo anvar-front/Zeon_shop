@@ -15,7 +15,7 @@ class UserManager(BaseUserManager):
         user.save()
 
         return user
-    
+
     def create_superuser(self, email, password):
 
         if email is None:
@@ -25,8 +25,8 @@ class UserManager(BaseUserManager):
             raise TypeError('Superuser must have a password!')
 
         user = self.create_user(
-            email = self.normalize_email(email),
-            password = password,
+            email=self.normalize_email(email),
+            password=password,
         )
 
         user.is_superuser = True
@@ -48,5 +48,5 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = verbose_name
 
     USERNAME_FIELD = 'email'
-    
+
     objects = UserManager()

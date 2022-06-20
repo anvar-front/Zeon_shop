@@ -49,10 +49,11 @@ class HelpSerializer(serializers.ModelSerializer):
     class Meta:
         model = Help
         fields = '__all__'
-        
+
 
 class Help_imgSerializer(serializers.ModelSerializer):
     questions = serializers.StringRelatedField(many=True)
+
     class Meta:
         model = Help_img
         fields = ['image', 'questions']
@@ -69,6 +70,7 @@ class Call_backSerializer(serializers.ModelSerializer):
 
 class Footer_second_sideSerializer(serializers.ModelSerializer):
     social = serializers.StringRelatedField()
+
     class Meta:
         model = Footer_second_side
         fields = ['social', 'link']
@@ -79,6 +81,7 @@ class Footer_first_sideSerializer(serializers.ModelSerializer):
     Футер
     """
     link = Footer_second_sideSerializer(many=True)
+
     class Meta:
         model = Footer_first_side
         fields = ['number', 'logo', 'info', 'link']

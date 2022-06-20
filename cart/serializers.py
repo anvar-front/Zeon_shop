@@ -11,7 +11,8 @@ class CartProductSerializer(serializers.ModelSerializer):
 
 class CartSerializer(serializers.ModelSerializer):
     def get_product(self, obj):
-        serializer = CartProductSerializer(obj.image_color, context=self.context)
+        serializer = CartProductSerializer(obj.image_color,
+                                           context=self.context)
         return serializer.data
 
     def get_quantity(self, obj):
@@ -19,6 +20,7 @@ class CartSerializer(serializers.ModelSerializer):
 
     quantity = serializers.SerializerMethodField('get_quantity')
     product = serializers.SerializerMethodField('get_product')
+
     class Meta:
         model = Image_color
         fields = ['quantity', 'image', 'color', 'product']
