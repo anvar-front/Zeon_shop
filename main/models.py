@@ -1,10 +1,10 @@
-from wsgiref.validate import validator
+from datetime import datetime
+
 from ckeditor.fields import RichTextField
 from django.core.validators import RegexValidator
 from django.db import models
-from .validate import validate_SVG_PNG
 
-from datetime import datetime
+from .validate import validate_SVG_PNG
 
 
 class AboutUs(models.Model):
@@ -23,12 +23,14 @@ class AboutUs(models.Model):
 
 
 class AboutUsImage(models.Model):
+    """
+    Фотографии для таблицы "О нас" (inline)
+    """
     aboutus = models.ForeignKey(AboutUs,
                                 on_delete=models.CASCADE,
                                 related_name='about_img',
                                 blank=True, default=None)
     image = models.ImageField(upload_to='about_us/')
-    is_active = models.BooleanField(default=False)
     is_main = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)

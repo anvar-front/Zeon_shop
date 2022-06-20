@@ -17,7 +17,7 @@ class AboutUsSerializer(serializers.ModelSerializer):
 
 class AdvantageSerializer(serializers.ModelSerializer):
     """
-    Сериализатор для преимуществ
+    Сериализатор для модели "Наши преимущества"
     """
     class Meta:
         model = Advantage
@@ -52,6 +52,9 @@ class HelpSerializer(serializers.ModelSerializer):
 
 
 class Help_imgSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор для фотографий о нас
+    """
     questions = serializers.StringRelatedField(many=True)
 
     class Meta:
@@ -69,6 +72,9 @@ class Call_backSerializer(serializers.ModelSerializer):
 
 
 class Footer_second_sideSerializer(serializers.ModelSerializer):
+    """
+    Футер вторая вкладка
+    """
     social = serializers.StringRelatedField()
 
     class Meta:

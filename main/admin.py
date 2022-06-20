@@ -2,6 +2,26 @@ from django.contrib import admin
 from .models import *
 
 
+class SliderAdmin(admin.ModelAdmin):
+
+    def has_add_permission(self, request):
+        if self.model.objects.count() >= 1:
+            return False
+        return True
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def changelist_view(self, request, extra_context=None):
+        if self.model.objects.count() < 1:
+            return super().add_view(request, extra_context)
+        else:
+            object = (self.model.objects.first()).id
+            return super().change_view(request=request,
+                                       extra_context=extra_context,
+                                       object_id=str(object))
+
+
 class AboutUsImgInline(admin.TabularInline):
     model = AboutUsImage
     max_num = 3
@@ -126,7 +146,7 @@ class Help_imgAdmin(admin.ModelAdmin):
                                        object_id=str(object))
 
 
-admin.site.register(Slider)
+admin.site.register(Slider, SliderAdmin)
 admin.site.register(AboutUs, AboutUsAdmin)
 admin.site.register(PublicOffer, PublicOfferAdmin)
 admin.site.register(Advantage)

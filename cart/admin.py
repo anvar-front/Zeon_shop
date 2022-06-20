@@ -86,3 +86,5 @@ class ClientAdmin(SuperModelAdmin):
 
 
 admin.site.register(Client, ClientAdmin)
+admin.site.register(Order_check)
+admin.site.register(Product_to_Order)

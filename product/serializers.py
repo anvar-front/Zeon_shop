@@ -8,7 +8,6 @@ class CollectionSerializer(serializers.HyperlinkedModelSerializer):
     """
     Сериализатор для коллекции
     """
-
     url = serializers.HyperlinkedIdentityField(
         view_name='product:collection-detail',
         lookup_field='pk'
@@ -17,7 +16,6 @@ class CollectionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Collection
         fields = ['id', 'url', 'image', 'title']
-
 
 
 class Collection_detailSerializer(serializers.ModelSerializer):
@@ -113,7 +111,7 @@ class Product_itemSerializer(serializers.ModelSerializer):
                   'images',
                   'similar'
                   ]
-
+                  
     """
     Функция для вывода 5 похожих товаров и одной коллекции
     Q - для искоючения самого обьекта из списка

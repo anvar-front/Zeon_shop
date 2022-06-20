@@ -164,3 +164,13 @@ class OrderAPIView(CreateAPIView):
             return Response({'status': 'success'})
         else:
             return Response({"status": "cart is empty"})
+
+
+class Order_historyAPIView(APIView):
+    """
+    Для получения списка заказов
+    """
+    def get(self, request):
+        order = Client.objects.all()
+        serializer = ClientSerializer(order, many=True)
+        return Response(serializer.data)

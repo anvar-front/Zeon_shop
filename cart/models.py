@@ -46,7 +46,7 @@ class Client(models.Model):
 class Order_check(models.Model):
     client = models.ForeignKey(Client,
                                on_delete=models.CASCADE,
-                               related_name='order',
+                               related_name='order_check',
                                null=True)
     quantity_line = models.IntegerField(verbose_name='Количество линеек')
     quantity = models.IntegerField(verbose_name='Количество товара')
@@ -68,7 +68,7 @@ class Order_check(models.Model):
 class Product_to_Order(models.Model):
     client = models.ForeignKey(Order_check,
                                on_delete=models.CASCADE,
-                               related_name='product',
+                               related_name='products',
                                null=True)
     image = models.ImageField(verbose_name='Фотография')
     color = ColorField(default='#fff', verbose_name='Цвет')

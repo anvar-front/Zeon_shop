@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path, re_path
+from django.urls import include, path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
@@ -23,11 +23,11 @@ schema_view = get_schema_view(
 urlpatterns = [
    path('admin/', admin.site.urls),
    path('api-auth/', include('rest_framework.urls')),
-   path('api/v1/main/', include('main.urls')),
-   path('api/v1/news/', include('news.urls')),
-   path('api/v1/cart/', include('cart.urls')),
-   path('api/v1/product/', include("product.urls")),
-   path('api/v1/user/', include('user.urls')),
+   path('api/user/', include('user.urls')),
+   path('api/product/', include("product.urls")),
+   path('api/main/', include('main.urls')),
+   path('api/news/', include('news.urls')),
+   path('api/cart/', include('cart.urls')),
 
    # swagger
    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

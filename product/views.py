@@ -1,7 +1,7 @@
 import random
 
 from news.pagination import PaginationHandlerMixin
-from rest_framework import filters, generics, status, permissions
+from rest_framework import filters, generics, permissions, status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -45,7 +45,7 @@ class CollectionDetailAPIView(APIView):
     Представление для вывода товаров выбранной коллекции
     """
     permission_classes = [permissions.AllowAny]
-    # pagination_class = TwelvePagination
+    pagination_class = TwelvePagination
 
     def get_object(self, pk):
         try:
@@ -55,6 +55,7 @@ class CollectionDetailAPIView(APIView):
 
     def get(self, request, pk):
         collection = self.get_object(pk)
+        print(type(collection))
         serializer = Collection_detailSerializer(collection)
         return Response(serializer.data)
 
@@ -140,7 +141,9 @@ class Favorite_productAPIView(APIView, PaginationHandlerMixin):
 
 
 class Favorite_ADD(APIView):
-
+    """ 
+    Представление для добавоения товара в избранные
+    """
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, pk, format=None):
@@ -149,7 +152,9 @@ class Favorite_ADD(APIView):
 
 
 class Favorite_REMOVE(APIView):
-
+    """
+    Представление для удаления товара из избранных
+    """
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, pk, format=None):
