@@ -9,6 +9,9 @@ from user.firebase import auth
 
 
 class RegistrationAPIView(APIView):
+    """
+    Регистрация
+    """
     permission_classes = (AllowAny,)
     serializer_class = RegistrationSerializer
 
@@ -24,6 +27,9 @@ class RegistrationAPIView(APIView):
 
 
 class UserAPIView(APIView):
+    """
+    Вывод всех пользователей
+    """
     permission_classes = (IsAdminUser,)
     serializer_class = UserSerializer
 
@@ -34,6 +40,9 @@ class UserAPIView(APIView):
 
 
 class User_detailAPIView(APIView):
+    """
+    История заказов по юзерам
+    """
     permission_classes = (IsAdminUser,)
 
     def get_object(self, pk):

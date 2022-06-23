@@ -59,6 +59,7 @@ class OrderInline(SuperInlineModelAdmin, StackedInline):
 class ClientAdmin(SuperModelAdmin):
     model = Client
     inlines = [OrderInline]
+    list_filter = ['status', 'email']
     readonly_fields = ('user',
                        'name',
                        'first_name',
@@ -86,5 +87,3 @@ class ClientAdmin(SuperModelAdmin):
 
 
 admin.site.register(Client, ClientAdmin)
-admin.site.register(Order_check)
-admin.site.register(Product_to_Order)

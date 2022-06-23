@@ -48,14 +48,14 @@ class HelpSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Help
-        fields = '__all__'
+        fields = ['id', 'question', 'answer']
 
 
 class Help_imgSerializer(serializers.ModelSerializer):
     """
     Сериализатор для фотографий о нас
     """
-    questions = serializers.StringRelatedField(many=True)
+    questions = HelpSerializer(many=True)
 
     class Meta:
         model = Help_img

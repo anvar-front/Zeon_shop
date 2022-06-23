@@ -58,12 +58,12 @@ class Order_checkSerializer(serializers.ModelSerializer):
     """
     Сериализатор для чека заказа
     """
-    products = Product_to_OrderSerializer(many=True)
+    product = Product_to_OrderSerializer(many=True)
 
     class Meta:
         model = Order_check
         fields = ['id',
-                  'products',
+                  'product',
                   'quantity_line',
                   'quantity',
                   'price',

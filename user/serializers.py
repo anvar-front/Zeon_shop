@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from .models import User
-from cart.models import Order_check, Product_to_Order, Client
+from cart.models import Client
 from cart.serializers import ClientSerializer
 
 class RegistrationSerializer(serializers.ModelSerializer):

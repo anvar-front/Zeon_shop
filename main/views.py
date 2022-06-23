@@ -59,18 +59,6 @@ class SliderAPIView(APIView):
 
 
 class HelpAPIView(APIView):
-    """
-    Помощь
-    """
-    permission_classes = [permissions.AllowAny]
-
-    def get(self, request, format=None):
-        help = Help.objects.all()
-        serializer = HelpSerializer(help, many=True)
-        return Response(serializer.data)
-
-
-class Help_imgAPIView(APIView):
 
     def get(self, request, format=None):
         help = Help_img.objects.all()

@@ -68,7 +68,7 @@ class Order_check(models.Model):
 class Product_to_Order(models.Model):
     client = models.ForeignKey(Order_check,
                                on_delete=models.CASCADE,
-                               related_name='products',
+                               related_name='product',
                                null=True)
     image = models.ImageField(verbose_name='Фотография')
     color = ColorField(default='#fff', verbose_name='Цвет')
