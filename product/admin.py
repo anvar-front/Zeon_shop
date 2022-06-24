@@ -2,7 +2,6 @@ from django.contrib import admin
 from .models import *
 
 
-
 class ProductImgColor(admin.TabularInline):
     model = Image_color
     extra = 0
@@ -11,8 +10,30 @@ class ProductImgColor(admin.TabularInline):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = [field.name for field in Product._meta.fields]
     inlines = [ProductImgColor]
+    list_filter = ('collection',)
+    list_display = ['id',
+                    'collection',
+                    'name',
+                    'price',
+                    'discount',
+                    'new_price',
+                    'size_range',
+                    'quantity',
+                    'bestseller',
+                    'new']
+    readonly_fields = ('quantity', 'new_price')
+    fields = ('collection',
+              'name',
+              'price',
+              'discount',
+              'new_price',
+              'description',
+              'size_range',
+              'quantity',
+              'bestseller',
+              'new')
+
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Collection)

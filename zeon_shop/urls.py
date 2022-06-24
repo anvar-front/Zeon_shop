@@ -1,12 +1,10 @@
-from django.contrib import admin
-from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
-from drf_yasg.views import get_schema_view
+from django.contrib import admin
+from django.urls import include, path
 from drf_yasg import openapi
-
+from drf_yasg.views import get_schema_view
 from rest_framework import permissions
-
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -23,15 +21,16 @@ schema_view = get_schema_view(
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('simple/', include('main.urls')),
-    path('news/', include('news.urls')),
-    path('product/', include('product.urls')),
+   path('admin/', admin.site.urls),
+   path('api-auth/', include('rest_framework.urls')),
+   path('api/user/', include('user.urls')),
+   path('api/product/', include("product.urls")),
+   path('api/main/', include('main.urls')),
+   path('api/news/', include('news.urls')),
+   path('api/cart/', include('cart.urls')),
 
-    # re_path(r'^swagger(?P\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+   # swagger
+   path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+   path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
-
-
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
