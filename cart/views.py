@@ -31,7 +31,7 @@ class AddToCart(APIView):
         color = get_object_or_404(Image_color,
                                   color=color_object,
                                   image_color=product)
-
+                                  
         # вызываем функцию add из cart.py
         cart.add(product, color)
 

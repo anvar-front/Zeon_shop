@@ -58,7 +58,8 @@ class CollectionDetailAPIView(APIView):
         print(type(collection))
         serializer = Collection_detailSerializer(collection)
         new_poducts = Product.objects.filter(new=True)[:5]
-        return Response({"Products": serializer.data, "New_products": (ProductSerializer(new_poducts, many=True).data)})
+        return Response({"Products": serializer.data, 
+                        "New_products": (ProductSerializer(new_poducts, many=True).data)})
 
 
 class ProductAPIView(generics.ListAPIView, PaginationHandlerMixin):
