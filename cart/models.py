@@ -57,9 +57,6 @@ class Order_check(models.Model):
     def __str__(self):
         return str(self.id)
 
-    def get_final_price(self):
-        return self.final_price
-
     class Meta:
         verbose_name = 'Чек'
         verbose_name_plural = 'Чек'
